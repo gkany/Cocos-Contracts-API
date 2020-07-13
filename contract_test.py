@@ -10,10 +10,10 @@ import hashlib
 import random
 import string
 
-cli_wallet_url = "http://127.0.0.1:8048"
+cli_wallet_url = "http://127.0.0.1:8047"
 headers = {"content-type": "application/json"}
 
-chain_url = "http://127.0.0.1:8049" # 有些接口cli_wallet没有，使用chain api
+chain_url = "http://127.0.0.1:8072" # 有些接口cli_wallet没有，使用chain api
 
 # curl https://api.cocosbcx.net
 # -d '{"id":1, "method":"call", "params":[0,"get_accounts",[["1.2.5", "1.2.100"]]]}'
@@ -1403,6 +1403,20 @@ class contract_api_case_test(unittest.TestCase):
     def test_contract_34_contract_fee_share(self):
         contract_name = self.contract_basic_name + ".contractfeeshare"
         file_name = os.getcwd() + '/contract_34_contract_fee_share_test.lua'
+        contract_create_if_not_exist(g_owner, contract_name, g_pub_key, file_name)
+        revise_contract(g_owner, contract_name, file_name)
+        # time.sleep(2)
+        # function = "test_helloworld"
+        # params = []
+        # result = call_contract(g_owner, contract_name, function, params)['result']
+        # tx_id = result[0]
+        # get_contract_call_tx_result(tx_id)
+        print('{} done\n'.format(sys._getframe().f_code.co_name))
+
+    @unittest.skipIf(True, "test other")
+    def test_contract_35_contract_fee_share(self):
+        contract_name = self.contract_basic_name + ".contractfeeshare"
+        file_name = os.getcwd() + '/contract_35_contract_fee_share_test.lua'
         contract_create_if_not_exist(g_owner, contract_name, g_pub_key, file_name)
         # time.sleep(2)
         # function = "test_helloworld"
