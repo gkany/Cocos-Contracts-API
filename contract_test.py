@@ -41,6 +41,12 @@ def random_lowercases(n):
 g_owner = "nicotest"
 g_pub_key = "COCOS56a5dTnfGpuPoWACnYj65dahcXMpTrNQkV3hHWCFkLxMF5mXpx"
 g_pri_key = "5J2SChqa9QxrCkdMor9VC2k9NT4R4ctRrJA6odQCPkb3yL89vxo"
+
+# mainnet
+#g_owner = "faucet1"
+#g_pub_key = "COCOS4z37sP33MsZS3a94RW3gukpunTcod5yZNDvJskPuhUtDf8Q9rp"
+#g_pri_key = "5JcR8oHjMAFqKVdx3SSwM1Ff*********************"
+
 g_contract_name = "contract.gastest100"
 g_function_name = "collateral"
 g_contract_lua_code = "function {}(to, amount) chainhelper:update_collateral_for_gas('',to,amount) end".format(
@@ -575,8 +581,9 @@ class contract_api_case_test(unittest.TestCase):
         # create_nh_asset by contract
         #contract_name = "contract.testapi16.createnhasset"
         contract_name = self.contract_basic_name + "16.createnhasset"
-        world_view = "test_wvvsrv"
-        lookup_world_view(world_view)
+        world_view = "test_wvvsrv" # local test
+        #world_view = "test_wvxaqc"  # mainnet
+        lookup_world_view(world_view) 
 
         base_describes = [
                 "'nh_symbol': '{}'".format(random_uppercases(3)),
