@@ -13,7 +13,7 @@ import string
 cli_wallet_url = "http://127.0.0.1:8047"
 headers = {"content-type": "application/json"}
 
-chain_url = "http://127.0.0.1:8072" # 有些接口cli_wallet没有，使用chain api
+chain_url = "http://127.0.0.1:8149" # 有些接口cli_wallet没有，使用chain api
 
 # curl https://api.cocosbcx.net
 # -d '{"id":1, "method":"call", "params":[0,"get_accounts",[["1.2.5", "1.2.100"]]]}'
@@ -533,7 +533,7 @@ class contract_api_case_test(unittest.TestCase):
         time.sleep(2)
         get_contract_call_tx_result(tx_id)
         print('{} done\n'.format(sys._getframe().f_code.co_name))
-
+    
     @unittest.skipIf(True, "test other")
     def test_contract_16_create_nh_asset(self):
         # 1. register_nh_asset_creator
@@ -549,9 +549,9 @@ class contract_api_case_test(unittest.TestCase):
         # 3. create_contract
         contract_name = self.contract_basic_name + "16.createnhasset"
         file_name = os.getcwd() + "/contract_16_create_nh_asset.lua"
-        # contract_create_if_not_exist(g_owner, contract_name, g_pub_key, file_name)
+        contract_create_if_not_exist(g_owner, contract_name, g_pub_key, file_name)
         revise_contract(g_owner, contract_name, file_name)
-        # time.sleep(2)
+        time.sleep(2)
 
         # 4. create_nh_asset by contract
         function = "test_create_nh_asset"
@@ -568,6 +568,39 @@ class contract_api_case_test(unittest.TestCase):
         tx_id = result[0]
         time.sleep(2)
         get_contract_call_tx_result(tx_id)
+        print('{} done\n'.format(sys._getframe().f_code.co_name))
+
+    @unittest.skipIf(False, "test other")
+    def test_call_contract_16_1_create_nh_asset(self):
+        # create_nh_asset by contract
+        #contract_name = "contract.testapi16.createnhasset"
+        contract_name = self.contract_basic_name + "16.createnhasset"
+        world_view = "test_wvvsrv"
+        lookup_world_view(world_view)
+
+        base_describes = [
+                "'nh_symbol': '{}'".format(random_uppercases(3)),
+                "'nh_symbol': '{}'".format(random_uppercases(5)),
+                "{'name':'ChinaJoy 2020 NFT门票','icon':'https://jdi.cocosbcx.net/image/nft/shop-logo.png','intro':'ChinaJoy 首套NFT门票，仅供ChinaJoy Plus 2020上线期间使用，该门票不可进入ChinaJoy线下展会。'}",
+                "{'name':'ChinaJoy 2020 NFT门票','icon':'https://jdi.cocosbcx.net/image/nft/shop-logo.png','intro':'ChinaJoy 首套NFT门票，仅供ChinaJoy Plus 2020上线期间使用，该门票不可进入ChinaJoy线下展会'}",
+                "'nh_symbol': '{}'".format(random_uppercases(7))
+        ]
+
+        function = "test_create_nh_asset"
+        symbol = "COCOS"
+        #base_describe = "'nh_symbol': '{}'".format(random_uppercases(5))
+        for base_describe in base_describes:
+            params = [
+                [2,{"v":g_owner}],
+                [2,{"v":symbol}],
+                [2,{"v":world_view}],
+                [2,{"v":base_describe}],
+                [3,{"v":True}]
+            ]
+            result = call_contract(g_owner, contract_name, function, params)['result']
+            tx_id = result[0]
+            time.sleep(2)
+            get_contract_call_tx_result(tx_id)
         print('{} done\n'.format(sys._getframe().f_code.co_name))
 
     @unittest.skipIf(True, "test other")
@@ -1399,7 +1432,7 @@ class contract_api_case_test(unittest.TestCase):
         get_contract_call_tx_result(tx_id)
         print('{} done\n'.format(sys._getframe().f_code.co_name))
 
-    @unittest.skipIf(False, "test other")
+    @unittest.skipIf(True, "test other")
     def test_contract_34_contract_fee_share(self):
         contract_name = self.contract_basic_name + ".contractfeeshare"
         file_name = os.getcwd() + '/contract_34_contract_fee_share_test.lua'
